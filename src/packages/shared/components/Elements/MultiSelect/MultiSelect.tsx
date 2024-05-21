@@ -2,8 +2,12 @@
 
 import {type Dispatch, type FC, type SetStateAction, useState} from 'react';
 import {Combobox, Group, Text, useCombobox} from '@mantine/core';
-import {Genre} from "@/packages/cinema/models/services";
+import Image from "next/image";
+
+import type {Genre} from "@/packages/cinema/models/services";
+
 import classes from "./multiSelectCustom.module.css";
+import chevronDown from '..//../../../../../public/ChevronDown.svg'
 
 
 type props = {
@@ -50,13 +54,13 @@ export const MultiSelectCustom: FC<props> = ({genres, selectedItems, setSelected
                         setPressed(true)
                     }}>
                         {!pressed ? (<div className={classes.multiSelectInput}>
-                                {selectedItems.length > 0 ? (<Text>{selectedItems.join(', ')}</Text>) : (
-                                    <Text className={classes.placeHolder}>Select genres</Text>)}
+                                {selectedItems.length > 0 ? (<Text>{selectedItems.join(', ')}</Text>) : (<Text className={classes.placeHolder}>Select genres</Text>)}
+                                <Image src={chevronDown} alt={'chevronDown'}/>
                             </div>)
                             :
                             (<div className={classes.multiSelectInputOn}>
-                                    {selectedItems.length > 0 ? (<Text>{selectedItems.join(', ')}</Text>) : (
-                                        <Text className={classes.placeHolder}>Select genres</Text>)}
+                                    {selectedItems.length > 0 ? (<Text>{selectedItems.join(', ')}</Text>) : (<Text className={classes.placeHolder}>Select genres</Text>)}
+                                    <Image src={chevronDown} alt={'chevronDown'}/>
                                 </div>
                             )}
                     </div>

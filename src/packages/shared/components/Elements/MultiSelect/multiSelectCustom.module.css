@@ -1,5 +1,7 @@
 .multiSelectInput {
     display: flex;
+    flex-direction: row;
+    justify-content: space-between;
     align-items: center;
     width: 280px;
     height: 42px;
@@ -11,6 +13,8 @@
 
 .multiSelectInputOn{
     display: flex;
+    flex-direction: row;
+    justify-content: space-between;
     align-items: center;
     width: 280px;
     height: 42px;

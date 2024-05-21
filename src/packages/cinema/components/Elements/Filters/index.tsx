@@ -3,6 +3,7 @@
 import React, {type FC, useEffect, useMemo, useState} from "react";
 import qs from 'qs'
 import {useRouter, useSearchParams} from "next/navigation";
+import Image from "next/image";
 import {Select, Text, TextInput} from "@mantine/core";
 import {YearPickerInput} from "@mantine/dates";
 
@@ -11,8 +12,10 @@ import {Genre, IMovieFilter} from "@/packages/cinema/models/services";
 import {VoteVector} from "@/packages/shared/components/Elements/VoteVector";
 import {MultiSelectCustom} from "@/packages/shared/components/Elements/MultiSelect/MultiSelect";
 
-
+import chevronDown from '..//../../../../../public/ChevronDown.svg'
 import classes from "./filters.module.css";
+
+
 
 type props = {
     genres: Genre[],
@@ -107,6 +110,7 @@ export const Filters: FC<props> = ({genres}) => {
 
                 <YearPickerInput
                     placeholder="Select year"
+                    rightSection={<Image src={chevronDown} alt={'chevronDown'}/>}
                     label='Year'
                     value={year ? new Date(year, 0, 1) : null}
                     onChange={yearChange}
@@ -139,6 +143,7 @@ export const Filters: FC<props> = ({genres}) => {
                     data={sortArr}
                     value={sort}
                     onChange={setSort}
+                    rightSection={<Image src={chevronDown} alt={'chevronDown'}/>}
                     withCheckIcon={false}
                     classNames={{label: classes.label, root: classes.sortRoot, input: classes.sortInput, option:classes.sortOption}}
                 />

@@ -27,6 +27,7 @@ export const PaginationBar: FC<props> = ({page, total}) => {
     return (
         <Pagination value={page} total={total}
                     onChange={onChange}
-                    classNames={{control: classes.control}}/>
+                    boundaries={0}
+                    classNames={{control: classes.control, dots:classes.paginationDots}}/>
     )
 }

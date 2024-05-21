@@ -2,6 +2,7 @@
 
 import {type FC, useMemo, useRef, useState} from "react";
 import Image from "next/image";
+import {useRouter} from "next/navigation";
 import {useLocalStorage} from "usehooks-ts";
 import {Button, Pagination, Text, TextInput, Title} from "@mantine/core";
 
@@ -16,17 +17,22 @@ import searchIcon from '../../../../../../public/Search.svg'
 import classes from "./movieCardList.module.css";
 
 
+
 type props = {
     genres: IGenre[]
 }
 
 export const MovieCardList: FC<props> = ({genres}) => {
 
+    const router = useRouter()
     const inputRef = useRef<HTMLInputElement>(null)
     const [rated] = useLocalStorage('rated movies', [])
     const [page, setPage] = useState<number>(1)
     const [text, setText] = useState('')
 
+    const backHome=()=>{
+        router.replace('/')
+    }
 
     const onGetMovieInfo = (id: number) => {
         const res: IId = (JSON.parse(localStorage.getItem('rated' + id) || '{}'))
@@ -81,7 +87,7 @@ export const MovieCardList: FC<props> = ({genres}) => {
                     <Image src={ratedIcon} alt={'ratedIcon'} width={400} height={300}/>
                     {/* eslint-disable-next-line react/no-unescaped-entities */}
                     <Text className={classes.textRated}>You haven't rated any films yet</Text>
-                    <Button className={classes.ratedButton}>Find movies</Button>
+                    <Button onClick={backHome} className={classes.ratedButton}>Find movies</Button>
                 </div>
             }
 

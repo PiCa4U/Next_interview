@@ -12,18 +12,18 @@ import voteStar from "../../../../public/voteStar.svg";
 import companyLogoUndefind from '../../../../public/companyLogoUndefind.svg'
 import classes from "./movie.module.css";
 import {Text, Title} from "@mantine/core";
+import {notFound} from "next/navigation";
 
 export default async function Movie({params}: { params: { id: string } }) {
     const res = await getMovieById(params.id);
     const video = await getMovieVideo(params.id)
 
 
-    if (!res?.data || !video) {
-        //TODO: link 404
-        return null;
+    if (!res?.data) {
+        notFound()
     }
 
-    const trailer = video.data.results.find(item => item.type.toLowerCase() === "trailer" || item.type.toLowerCase() === "teaser") ?? video.data.results[0];
+    const trailer = video?.data.results.find(item => item.type.toLowerCase() === "trailer" || item.type.toLowerCase() === "teaser") ?? video?.data.results[0];
     const embedUrl = `https://www.youtube.com/embed/${trailer?.key}`;
     const voteCount = formatNumber(res.data?.vote_count ?? 0)
     const voteAverage = res.data.vote_average.toFixed(1)

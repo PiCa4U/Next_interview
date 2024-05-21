@@ -18,6 +18,50 @@
     }
 }
 
+.errorPage{
+    display: flex;
+    flex-direction: column;
+    background-color:#F5F5F6;
+}
+
+.errorLogo{
+    padding: 24px;
+}
+
+.errorText{
+    font-size: 20px;
+    font-weight: 600;
+}
+
+
+
+.errorButton{
+    background-color: #9854F6;
+    color: white;
+}
+
+.errorButton:hover{
+    background-color: #9854F6;
+}
+
+.errorContainer{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 48px;
+    align-items: center;
+    height: 100%;
+
+}
+
+.errorButtonContainer{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap:16px
+}
+
 .moviesList {
     padding: 24px 0;
     display: grid;
