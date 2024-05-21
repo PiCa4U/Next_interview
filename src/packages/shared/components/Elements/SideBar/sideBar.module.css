@@ -1,0 +1,57 @@
+.container{
+    display: flex;
+    flex-direction: column;
+    gap: 80px;
+    padding: 24px;
+    width: 280px;
+    background-color: #F2EBF9;
+}
+
+
+.burger{
+    display: flex;
+    position: absolute;
+    top:24px;
+    left:2px;
+    z-index: 10;
+}
+
+@media (max-width: 1280px) {
+    .container{
+        display: none;
+        position: absolute;
+        z-index: 9;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        padding: 60px 24px 24px 24px;
+    }
+}
+
+@media (min-width: 1280px) {
+    .burger{
+        display: none;
+    }
+
+}
+
+.buttonContainer{
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+.button{
+    width: 232px;
+    height: 42px;
+    padding: 10px;
+    border-radius: 8px;
+
+}
+.onButton{
+    width: 232px;
+    height: 42px;
+    padding: 10px ;
+    border-radius: 8px;
+    color: #9854F6;
+    background-color: #E5D5FA;
+}

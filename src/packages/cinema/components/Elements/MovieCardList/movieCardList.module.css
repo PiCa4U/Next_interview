@@ -1,0 +1,125 @@
+.moviesList {
+    padding: 24px 0;
+    display: grid;
+    grid-gap: 16px;
+    grid-template-columns: 1fr;
+}
+
+@media (min-width: 1200px) {
+    .moviesList {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+.control{
+   &[data-active]{
+       background-color: #9854F6;
+       border-color: #9854F6;
+   }
+}
+
+.container{
+    display: flex;
+    flex-direction: column;
+    gap:24px;
+}
+
+.paginationContainer{
+    display: flex;
+    justify-content: center;
+}
+
+.title{
+    font-weight: 700;
+    font-size: 36px;
+    color:black;
+}
+
+.wrapper{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.input{
+    min-width: 490px;
+    height: 48px;
+    border-color: #EAEBED;
+    border-radius: 8px;
+    background-color: white;
+}
+
+@media (max-width: 720px) {
+    .input{
+        min-width: 160px;
+    }
+}
+
+.button{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 88px;
+    height: 32px;
+    border-radius: 8px;
+    background-color: #9854F6;
+}
+
+.button:hover{
+    background-color: #9854F6;
+}
+
+.headerContainer{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+@media (max-width: 720px) {
+    .headerContainer{
+        flex-direction: column;
+    }
+}
+
+
+.main {
+    display: flex;
+    flex-direction: column;
+    padding:40px 90px 40px 90px;
+    background-color: #F5F5F6;
+    width: 100%;
+    height: 100%;
+}
+@media (max-width: 720px) {
+    .main{
+        padding:60px 2px 20px 2px;
+    }
+}
+
+.image{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.ratedUndefind{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 16px;
+}
+.textRated{
+    font-weight: 600;
+    font-size: 20px;
+}
+.ratedButton{
+    background-color: #9854F6;
+}
+.ratedButton:hover{
+    background-color: #9854F6;
+}
+
+.paginationDots{
+    display: none;
+}

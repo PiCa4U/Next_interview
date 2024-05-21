@@ -1,0 +1,86 @@
+.votes{
+    display: flex;
+    flex-direction: row;
+    gap:8px;
+}
+
+.cardInfo{
+    display: flex;
+    flex-direction: row;
+    gap:20px;
+}
+.textInfo{
+    display: flex;
+    flex-direction: column;
+    gap:8px;
+}
+
+@media(max-width: 720px){
+    .title{
+        font-size: 14px;
+    }
+}
+
+.title{
+    font-size: 20px;
+    font-weight: 600;
+    color: #9854F6;
+}
+.date{
+    font-weight: 400;
+    color:#7B7C88
+}
+.genres{
+    font-weight: 400;
+    color:#7B7C88
+}
+.genresMain{
+    font-size: 16px;
+    font-weight: 400;
+
+}
+.genresContainer{
+    display: flex;
+    flex-direction: row;
+    gap:8px;
+}
+
+.voteAverage{
+    font-weight: 600;
+}
+.voteCount{
+    font-weight: 400;
+    color:#7B7C88
+}
+.container{
+    display: flex;
+    justify-content: space-between;
+    gap: 8px;
+    padding: 24px;
+    border-radius: 12px;
+    background-color: white;
+
+    min-height: 218px;
+}
+@media(max-width:720px){
+    .container{
+        width: 100%;
+        min-height: 218px;
+    }
+}
+.votesInfo{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.posterUndefind{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 170px;
+    min-width: 119px;
+    background-color: #EAEBED;
+}
+
+

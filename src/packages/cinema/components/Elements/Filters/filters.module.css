@@ -1,0 +1,107 @@
+.container{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap:16px
+}
+
+.rateContainer{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap:8px
+}
+
+.yearPicker{
+    display: flex;
+    align-items: center;
+    width: 280px;
+    height: 42px;
+    border-radius: 8px;
+    border-color: #D5D6DC;
+    background-color: white;
+    padding: 8px 12px 8px 12px ;
+}
+
+.yearPicker:focus{
+    border-color: #9854F6;
+}
+
+.rateInput{
+    min-width: 137.83px;
+    height: 42px;
+    padding: 8px 12px 8px 12px;
+    border-radius: 8px;
+    border-color: #D5D6DC;
+    background-color: white;
+}
+.rateInput:focus{
+    border-color: #9854F6;
+}
+
+.rateRoot{
+    display: flex;
+    align-items: end;
+}
+
+.yearItem:focus{
+    background-color: #9854F6;
+}
+
+.multiSelectContainer{
+    height: 72px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+}
+.label{
+    font-size: 16px;
+    font-weight: 700;
+    padding: 0 0 8px 0;
+    color: black;
+}
+
+.resetButton{
+    display: flex;
+    align-items: end;
+    padding: 11px 0 11px 0;
+    color: #7B7C88;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.resetButton:hover{
+    cursor: pointer;
+}
+
+.sortInput{
+    display: flex;
+    align-items: center;
+    width: 280px;
+    height: 42px;
+    border-radius: 8px;
+    background-color: white;
+    padding: 8px 12px 8px 12px ;
+}
+
+.sortInput:focus{
+    border-color: #9854F6;
+}
+
+.sortOption:hover{
+    background-color: #9854F6;
+}
+
+.sortRoot{
+    display: flex;
+    flex-direction: column;
+    gap:8px;
+    padding-top: 24px;
+}
+
+.sortContainer{
+    display: flex;
+    width: 100%;
+    justify-content: end;
+}

@@ -1,0 +1,6 @@
+.control{
+    &[data-active]{
+        background-color: #9854F6;
+        border-color: #9854F6;
+    }
+}

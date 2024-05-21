@@ -1,0 +1,40 @@
+.multiSelectInput {
+    display: flex;
+    align-items: center;
+    width: 280px;
+    height: 42px;
+    border-radius: 8px;
+    border: 1px solid #D5D6DC;
+    background-color: white;
+    padding: 8px 12px 8px 12px ;
+}
+
+.multiSelectInputOn{
+    display: flex;
+    align-items: center;
+    width: 280px;
+    height: 42px;
+    border-radius: 8px;
+    border: 1px solid #9854F6;
+    background-color: white;
+    padding: 8px 12px 8px 12px ;
+}
+
+.item{
+    border-radius: 8px;
+}
+
+.item:hover{
+    background-color:#9854F6
+}
+
+.dropdown{
+    height: 224px;
+    overflow: scroll;
+}
+
+.placeHolder{
+    color:#ACADB9
+}
+
+
