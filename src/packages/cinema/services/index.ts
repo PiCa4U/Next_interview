@@ -21,7 +21,6 @@ const api = axios.create({
 
 export const getMovies = async (filter:IMovieFilter) =>{
     const filterString = qs.stringify(filter, { arrayFormat: 'comma' })
-    console.log(filterString)
    try{return await api.get<IMoviesResponse>(`/3/discover/movie?include_adult=false&include_video=false&language=en-US&${filterString}`)}
     catch(err){console.error(err)}
 }

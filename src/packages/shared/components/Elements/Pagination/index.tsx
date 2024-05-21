@@ -19,10 +19,6 @@ export const PaginationBar: FC<props> = ({page, total}) => {
     const router = useRouter()
     const filters = useMemo(() => qs.parse(searchParams.toString()) as unknown as IMovieFilter, [searchParams])
 
-    useEffect(() => {
-        console.log(page)
-    }, [page]);
-
     const onChange = useCallback((value: number) => {
         const params = qs.stringify({...filters, page: value}, {arrayFormat: 'repeat', encodeValuesOnly: true})
         router.replace(`/?${params}`)

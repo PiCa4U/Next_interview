@@ -16,7 +16,6 @@ export default async function Home(props: { searchParams: IMovieFilter }) {
 
     const totalPages = (res?.data.total_pages ?? 0) < 500 ? res?.data.total_pages ?? 0 : 500;
     const page = Number(props.searchParams?.page ?? 1)
-    console.log(page)
     const genres = genresData?.data.genres ?? []
 
     return (
