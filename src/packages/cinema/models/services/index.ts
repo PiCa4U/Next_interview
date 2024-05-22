@@ -116,9 +116,7 @@ export interface IMovieCard {
 
 }
 
-interface MoviesId{
-    id: number;
-}
+
 
 export interface IGenre {
     id: number;
@@ -131,9 +129,19 @@ export interface IGenreResponse {
 
 export interface IMovieFilter {
     page: number;
-    genres?: string[];
-    year?:number;
-    gte?:number;
-    lte?:number;
-    sort?:string
+    with_genres?:  string[];
+    'primary_release_year'?:number;
+    'vote_average.gte'?:number;
+    'vote_average.lte'?:number;
+    sort_by?:string
 }
+
+export interface IMovieFilterUpdate {
+    page?: number;
+    with_genres?:  string[] | number[];
+    'primary_release_year'?:number;
+    'vote_average.gte'?:number;
+    'vote_average.lte'?:number;
+    sort_by?:string
+}
+

@@ -8,11 +8,13 @@ import {convertMinutes, formatBudget, formatDate, formatNumber} from "@/packages
 import {RaitingStar} from "@/packages/shared/components/Elements/RaitingStar/RaitingStar";
 import {SideBar} from "@/packages/shared/components/Elements/SideBar/SideBar";
 
+import posterUndefind from "../../../../public/posterUndefind.svg";
 import voteStar from "../../../../public/voteStar.svg";
 import companyLogoUndefind from '../../../../public/companyLogoUndefind.svg'
 import classes from "./movie.module.css";
 import {Text, Title} from "@mantine/core";
 import {notFound} from "next/navigation";
+
 
 export default async function Movie({params}: { params: { id: string } }) {
     const res = await getMovieById(params.id);
@@ -47,11 +49,19 @@ export default async function Movie({params}: { params: { id: string } }) {
                 </div>
                 <div className={classes.raitingMovie}>
                     <div className={classes.container}>
-                        <Image src={`https://image.tmdb.org/t/p/original/${res.data.poster_path}`}
-                               alt='poster'
-                               width={250}
-                               height={352}
-                        />
+                        {res.data.poster_path ?
+                            < Image src={`https://image.tmdb.org/t/p/original/${res.data.poster_path}`}
+                                    alt='poster'
+                                    width={250}
+                                    height={352}
+                            /> :
+                            <div className={classes.posterUndefind}>
+                                <Image src={posterUndefind}
+                                       alt={'posterUndefind'}
+                                       width={57}
+                                       height={44}
+                                />
+                            </div>}
                         <div className={classes.movieAllInfo}>
                             <div className={classes.textInfo}>
                                 <Title className={classes.title}>{res.data.title}</Title>
@@ -84,23 +94,23 @@ export default async function Movie({params}: { params: { id: string } }) {
                         <RaitingStar data={{...res.data, genre_ids:res.data.genres.map(item => item.id)}} />
                     </div>
                 </div>
-                <div className={classes.movieVideoInfo}>
+                {res.data.production_companies && trailer && res.data.overview?<div className={classes.movieVideoInfo}>
                     {trailer ? (<div>
                         <Title className={classes.trailerTitle}>Trailer</Title>
 
-                            <iframe
-                                src={embedUrl}
-                                frameBorder="0"
-                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                                allowFullScreen
-                                style={{
-                                    borderRadius: 9,
-                                    width: '100%',
-                                    maxWidth: 500,
-                                    aspectRatio: 1.6
-                                }}
-                                title={trailer?.key}
-                            />
+                        <iframe
+                            src={embedUrl}
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                            allowFullScreen
+                            style={{
+                                borderRadius: 9,
+                                width: '100%',
+                                maxWidth: 500,
+                                aspectRatio: 1.6,
+                                borderWidth:0,
+                            }}
+                            title={trailer?.key}
+                        />
 
                     </div>) : null}
                     {res.data.overview ? (
@@ -121,19 +131,19 @@ export default async function Movie({params}: { params: { id: string } }) {
                                     <div className={classes.companyInfo} key={item.id}>
                                         <div className={classes.companyLogos}>
                                             {item.logo_path ? (
-                                                <Image src={`https://image.tmdb.org/t/p/original/${item.logo_path}`}
-                                                       alt='Company'
-                                                       layout="responsive"
-                                                       width={40}
-                                                       height={40}/>) : (
-                                                <Image src={companyLogoUndefind} alt='logo'/>)}
+                                                    <Image src={`https://image.tmdb.org/t/p/original/${item.logo_path}`}
+                                                           alt='Company'
+                                                           layout="responsive"
+                                                           width={40}
+                                                           height={40}/>)
+                                                : (<Image src={companyLogoUndefind} alt='logo'/>)}
                                         </div>
                                         <Text className={classes.companyTitle}>{item.name}</Text>
                                     </div>
                                 ))}
                             </div>
                         </div>) : null}
-                </div>
+                </div> : null}
             </div>
         </main>
 

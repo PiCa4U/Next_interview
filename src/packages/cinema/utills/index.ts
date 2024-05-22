@@ -33,3 +33,11 @@ export const formatBudget=(budget:number)=>{
         minimumFractionDigits: 0
     }).format(budget);
 }
+
+export const voteDown = (param?: number) => {
+    return param? param - 1 : 0;
+}
+
+export const voteUp = (param?: number) => {
+    return (param ?? 0) + 1;
+};

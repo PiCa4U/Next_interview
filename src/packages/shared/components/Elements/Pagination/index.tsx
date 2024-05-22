@@ -1,6 +1,6 @@
 'use client'
 
-import {type FC, useCallback, useEffect, useMemo} from "react";
+import {type FC, useCallback, useMemo} from "react";
 import {Pagination} from "@mantine/core";
 import {useRouter, useSearchParams} from "next/navigation";
 import qs from "qs";
@@ -21,13 +21,16 @@ export const PaginationBar: FC<props> = ({page, total}) => {
 
     const onChange = useCallback((value: number) => {
         const params = qs.stringify({...filters, page: value}, {arrayFormat: 'repeat', encodeValuesOnly: true})
-        router.replace(`/?${params}`)
+        router.push(`/?${params}`)
     }, [filters, router])
 
     return (
-        <Pagination value={page} total={total}
-                    onChange={onChange}
-                    boundaries={0}
-                    classNames={{control: classes.control, dots:classes.paginationDots}}/>
+
+        <div>
+            {total !== 1?<Pagination value={page} total={total}
+                         onChange={onChange}
+                         boundaries={0}
+                         classNames={{control: classes.control, dots: classes.paginationDots}}/>:null}
+        </div>
     )
 }

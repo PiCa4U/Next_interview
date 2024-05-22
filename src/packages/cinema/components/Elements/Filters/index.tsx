@@ -1,13 +1,13 @@
 'use client'
 
-import React, {type FC, useEffect, useMemo, useState} from "react";
+import React, {type FC, useCallback, useEffect, useMemo, useState} from "react";
 import qs from 'qs'
-import {useRouter, useSearchParams} from "next/navigation";
+import {useRouter} from "next/navigation";
 import Image from "next/image";
 import {Select, Text, TextInput} from "@mantine/core";
 import {YearPickerInput} from "@mantine/dates";
 
-import {Genre, IMovieFilter} from "@/packages/cinema/models/services";
+import {Genre, IMovieFilter, IMovieFilterUpdate} from "@/packages/cinema/models/services";
 
 import {VoteVector} from "@/packages/shared/components/Elements/VoteVector";
 import {MultiSelectCustom} from "@/packages/shared/components/Elements/MultiSelect/MultiSelect";
@@ -16,58 +16,61 @@ import chevronDown from '..//../../../../../public/ChevronDown.svg'
 import classes from "./filters.module.css";
 
 
-
 type props = {
     genres: Genre[],
+    filter: IMovieFilter,
 }
 
-const sortArray = [
-    'popularity.asc',
-    'popularity.desc',
-    'revenue.asc',
-    'revenue.desc',
-    'primary_release_date.desc',
-    'original_title.desc',
-    'vote_average.desc',
-    'vote_average.asc',
-    'vote_count.asc',
-    'vote_count.desc'
-]
-const sortArr = [
-    'Least Popular',
-    'Most Popular',
-    'Least Revenue',
-    'Highest Revenue',
-    'Release Date',
-    'Title',
-    'Most Rated',
-    'Least Rated',
-    'Least Voted',
-    'Most Voted'
+const sortOptions = [
+    {"label": "Most Popular", "value": "popularity.desc"},
+    {"label": "Least Popular", "value": "popularity.asc"},
+    {"label": "Least Revenue", "value": "revenue.asc"},
+    {"label": "Highest Revenue", "value": "revenue.desc"},
+    {"label": "Release Date", "value": "primary_release_date.desc"},
+    {"label": "Title", "value": "original_title.desc"},
+    {"label": "Most Rated", "value": "vote_average.desc"},
+    {"label": "Least Rated", "value": "vote_average.asc"},
+    {"label": "Least Voted", "value": "vote_count.asc"},
+    {"label": "Most Voted", "value": "vote_count.desc"}
 ]
 
-export const Filters: FC<props> = ({genres}) => {
-    const searchParams = useSearchParams()
+export const Filters: FC<props> = ({genres, filter}) => {
     const router = useRouter()
-    const filter = useMemo(() => qs.parse(searchParams.toString()) as unknown as IMovieFilter, [searchParams])
-    const [year, setYear] = useState<number | undefined>(filter?.year)
-    const [selected, setSelected] = useState<string[]>(filter?.genres ?? [])
-    const [gte, setGte] = useState<number | undefined>(filter?.gte)
-    const [lte, setLte] = useState<number | undefined>(filter?.lte)
-    const [sort, setSort] = useState<string | null>('Most Popular')
+
+    const year = useMemo(() => filter?.primary_release_year, [filter])
+    const selected = useMemo(() => genres.filter(genre => filter?.with_genres?.includes(String(genre.id))).map(item => item.name), [filter, genres])
+    const [gte, setGte] = useState<number | undefined>(filter?.["vote_average.gte"])
+    const [lte, setLte] = useState<number | undefined>(filter?.["vote_average.lte"])
+    const sort = useMemo(() => sortOptions.find(item => item.value === filter?.sort_by)?.value ?? sortOptions[0].value, [filter])
 
 
-    useEffect(() => {
+    const queryUpdate = useCallback(({page = 1, ...updFilter}: IMovieFilterUpdate) => {
         const params = qs.stringify({
-                with_genres: genres.filter(item => selected.includes(item.name)).map(item => item.id),
-                'primary_release_year': year,
-                'vote_average.gte': gte,
-                'vote_average.lte': lte,
-                sort_by: sortArray[sortArr.findIndex(item => item === sort)]
+                ...filter,
+                ...updFilter,
+                page,
             },
             {arrayFormat: 'repeat', encodeValuesOnly: true})
         router.replace(`/?${params}`)
-    }, [router, selected, year, gte, lte, sort])
+    }, [filter, router])
+
+    useEffect(() => {
+        if (lte === filter?.["vote_average.lte"]) {
+            return;
+        }
+        queryUpdate({'vote_average.lte': lte})
+    }, [lte]);
+
+    useEffect(() => {
+        if (gte === filter?.["vote_average.gte"]) {
+            return;
+        }
+        queryUpdate({'vote_average.gte': gte})
+    }, [gte]);
+
+    const onSortChange = useCallback((value: string | null) => {
+        queryUpdate({sort_by: value ?? undefined})
+    }, [queryUpdate])
 
     const gteChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const value = event.currentTarget.value;
@@ -84,18 +87,18 @@ export const Filters: FC<props> = ({genres}) => {
     const yearChange = (date: Date | null) => {
         if (date) {
             const selectedYear = date.getFullYear();
-            setYear(selectedYear);
+            queryUpdate({primary_release_year: selectedYear});
         } else {
-            setYear(undefined);
+            queryUpdate({primary_release_year: undefined});
         }
     };
 
+    const onGenresUpdate = useCallback((list: string[]) => {
+        const keys = genres.filter(item => list.includes(item.name)).map(item => item.id)
+        queryUpdate({with_genres: keys})
+    }, [queryUpdate, genres])
+
     const resetFilters = () => {
-        setYear(undefined);
-        setSelected([]);
-        setGte(undefined);
-        setLte(undefined);
-        setSort('Most Popular');
 
         router.replace('/');
     }
@@ -105,7 +108,7 @@ export const Filters: FC<props> = ({genres}) => {
             <div className={classes.container}>
                 <div>
                     <Text className={classes.label}>Genres</Text>
-                    <MultiSelectCustom genres={genres} selectedItems={selected} setSelectedItems={setSelected}/>
+                    <MultiSelectCustom genres={genres} selectedItems={selected} setSelectedItems={onGenresUpdate}/>
                 </div>
 
                 <YearPickerInput
@@ -120,7 +123,7 @@ export const Filters: FC<props> = ({genres}) => {
                     <TextInput
                         label='Ratings'
                         placeholder={'From'}
-                        rightSection={<VoteVector setValue={setGte} value={gte}/>}
+                        rightSection={<VoteVector setValue={setGte}/>}
                         value={gte !== undefined ? gte.toString() : ''}
                         onChange={gteChange}
                         classNames={{label: classes.label, input: classes.rateInput}}
@@ -128,7 +131,7 @@ export const Filters: FC<props> = ({genres}) => {
                     <TextInput
                         label=' '
                         placeholder={'To'}
-                        rightSection={<VoteVector setValue={setLte} value={lte}/>}
+                        rightSection={<VoteVector setValue={setLte}/>}
                         value={lte !== undefined ? lte.toString() : ''}
                         onChange={lteChange}
                         classNames={{label: classes.label, input: classes.rateInput, root: classes.rateRoot}}
@@ -140,12 +143,17 @@ export const Filters: FC<props> = ({genres}) => {
             <div className={classes.sortContainer}>
                 <Select
                     label={'Sort by'}
-                    data={sortArr}
+                    data={sortOptions}
                     value={sort}
-                    onChange={setSort}
+                    onChange={onSortChange}
                     rightSection={<Image src={chevronDown} alt={'chevronDown'}/>}
                     withCheckIcon={false}
-                    classNames={{label: classes.label, root: classes.sortRoot, input: classes.sortInput, option:classes.sortOption}}
+                    classNames={{
+                        label: classes.label,
+                        root: classes.sortRoot,
+                        input: classes.sortInput,
+                        option: classes.sortOption
+                    }}
                 />
             </div>
         </div>

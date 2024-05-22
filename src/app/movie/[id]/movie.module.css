@@ -1,5 +1,6 @@
 .main {
     display: flex;
+    flex: 1;
     flex-direction: column;
     padding:40px 180px 40px 180px;
     background-color: #F5F5F6;
@@ -100,7 +101,7 @@
     padding: 24px;
 }
 
-@media (max-width: 720px) {
+@media (max-width: 1200px) {
     .movieVideoInfo{
         min-width: 300px;
     }
@@ -163,7 +164,25 @@
     }
 }
 
+@media (max-width: 1200px) {
+    .raitingMovie {
+        min-width: 200px;
+        min-height: 200px;
+    }
+}
+
 .page{
     display: flex;
     flex-direction: row;
+    min-height: 100vh;
+    width: 100%;
+}
+
+.posterUndefind{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 352px;
+    min-width: 250px;
+    background-color: #EAEBED;
 }

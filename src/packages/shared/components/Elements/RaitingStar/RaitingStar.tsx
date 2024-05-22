@@ -1,12 +1,12 @@
 'use client'
 
-import {FC, useEffect} from "react";
+import {type FC, useEffect, useState} from "react";
 import Image from "next/image";
 import {useDisclosure} from '@mantine/hooks';
 import {Button, Modal, Title} from "@mantine/core";
 import {useLocalStorage} from "usehooks-ts";
 
-import {IId, IMovie, IMovieCard, IMovieDetails} from "@/packages/cinema/models/services";
+import type{IId, IMovieCard} from "@/packages/cinema/models/services";
 
 import voteStarGrey from '../../../../../../public/voteStarGrey.svg'
 import voteStarPurple from '../../../../../../public/voteStarPurple.svg'
@@ -27,7 +27,11 @@ export const RaitingStar: FC<props> = ({data}) => {
     const [opened, {open, close}] = useDisclosure(false);
     const [value, setValue] = useLocalStorage<null | IId>('rated' + data.id, null)
     const [ratedMovies, setRatedMovies] = useLocalStorage<number[]>('rated movies', [])
+    const [isMounted, setIsMounted] = useState(false);
 
+    useEffect(() => {
+        setIsMounted(true);
+    }, []);
 
     const remove = () => {
         localStorage.removeItem('rated' + data.id);
@@ -43,6 +47,11 @@ export const RaitingStar: FC<props> = ({data}) => {
         arr?.push(data.id)
         setRatedMovies(arr)
     }
+
+    if (!isMounted) {
+        return null
+    }
+
 
     return (
         <div>

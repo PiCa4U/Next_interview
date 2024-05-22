@@ -4,7 +4,7 @@ import {type FC, useMemo} from "react";
 import Image from "next/image";
 import Link from 'next/link'
 
-import {IGenreResponse, IMovie, IMovieCard} from "@/packages/cinema/models/services";
+import type {IGenreResponse, IMovieCard} from "@/packages/cinema/models/services";
 import {formatNumber} from "@/packages/cinema/utills";
 
 import {RaitingStar} from "@/packages/shared/components/Elements/RaitingStar/RaitingStar";
@@ -27,7 +27,8 @@ export const MovieCard: FC<MovieCardProps> = ({data, genres}) => {
     return (
         <div className={classes.container}>
             <div className={classes.cardInfo}>
-                {data.poster_path ? <Image src={`https://image.tmdb.org/t/p/original/${data.poster_path}`}
+                {data.poster_path ?
+                    <Image src={`https://image.tmdb.org/t/p/original/${data.poster_path}`}
                                            alt='poster'
                                            width={119}
                                            height={170}

@@ -1,6 +1,6 @@
 'use client'
 
-import {type FC, useMemo, useRef, useState} from "react";
+import {type FC, useMemo, useRef, useState, useEffect} from "react";
 import Image from "next/image";
 import {useRouter} from "next/navigation";
 import {useLocalStorage} from "usehooks-ts";
@@ -11,42 +11,43 @@ import {MovieCard} from "@/packages/cinema/components/Elements/MovieCard/MovieCa
 
 import {onArraySlice} from "@/packages/shared/utills";
 
-
 import ratedIcon from '../../../../../../public/pic 2.svg'
 import searchIcon from '../../../../../../public/Search.svg'
 import classes from "./movieCardList.module.css";
-
-
 
 type props = {
     genres: IGenre[]
 }
 
 export const MovieCardList: FC<props> = ({genres}) => {
-
     const router = useRouter()
     const inputRef = useRef<HTMLInputElement>(null)
     const [rated] = useLocalStorage('rated movies', [])
     const [page, setPage] = useState<number>(1)
     const [text, setText] = useState('')
+    const [isMounted, setIsMounted] = useState(false);
+
+    useEffect(() => {
+        setIsMounted(true);
+    }, []);
 
     const backHome=()=>{
         router.replace('/')
     }
 
     const onGetMovieInfo = (id: number) => {
+        if (!isMounted) return null;
         const res: IId = (JSON.parse(localStorage.getItem('rated' + id) || '{}'))
         return res.data
     }
 
-    const movies = useMemo(() => (rated.map(item => onGetMovieInfo(item)) ?? []).filter(movie => movie.title.toLowerCase().includes(text.toLowerCase())), [text, rated])
+    const movies = useMemo(() => (isMounted ? (rated.map(item => onGetMovieInfo(item)) ?? []).filter(movie => movie?.title.toLowerCase().includes(text.toLowerCase())) : []), [text, rated])
 
     const totalPages = useMemo(() => {
         if (movies.length % 4) {
             return (Math.floor(movies.length / 4) + 1)
         }
         return (movies.length / 4)
-
     }, [movies])
 
     const pageMovies = useMemo(() =>
@@ -57,6 +58,9 @@ export const MovieCardList: FC<props> = ({genres}) => {
         inputRef.current?.value && setText(inputRef.current?.value)
     }
 
+    if (!isMounted) {
+        return null
+    }
 
     return (
         <div className={classes.main}>
@@ -76,11 +80,13 @@ export const MovieCardList: FC<props> = ({genres}) => {
             {rated.length ?
                 <div className={classes.container}>
                     <div className={classes.moviesList}>
-                        {pageMovies.map((item) => <MovieCard data={item} key={item.id} genres={genres}/>)}
+                        {pageMovies.map((item) => item && <MovieCard data={item} key={item.id} genres={genres}/>)}
                     </div>
                     <div className={classes.paginationContainer}>
-                        <Pagination total={totalPages} value={page} onChange={setPage}
-                                    classNames={{control: classes.control}}/>
+                        {totalPages !== 1?<Pagination value={page} total={totalPages}
+                                                onChange={setPage}
+                                                boundaries={0}
+                                                classNames={{control: classes.control, dots: classes.paginationDots}}/>:null}
                     </div>
                 </div> :
                 <div className={classes.ratedUndefind}>
@@ -90,7 +96,6 @@ export const MovieCardList: FC<props> = ({genres}) => {
                     <Button onClick={backHome} className={classes.ratedButton}>Find movies</Button>
                 </div>
             }
-
         </div>
     )
 }

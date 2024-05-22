@@ -1,6 +1,4 @@
-'use client'
-
-import {type Dispatch, type FC, type SetStateAction, useState} from 'react';
+import { type FC, useCallback, useState} from 'react';
 import {Combobox, Group, Text, useCombobox} from '@mantine/core';
 import Image from "next/image";
 
@@ -13,7 +11,7 @@ import chevronDown from '..//../../../../../public/ChevronDown.svg'
 type props = {
     genres: Genre[],
     selectedItems: string[];
-    setSelectedItems: Dispatch<SetStateAction<string[]>>;
+    setSelectedItems: (value: string[]) => void;
 }
 
 export const MultiSelectCustom: FC<props> = ({genres, selectedItems, setSelectedItems}) => {
@@ -26,6 +24,17 @@ export const MultiSelectCustom: FC<props> = ({genres, selectedItems, setSelected
         },
     });
 
+    const onSubmit = useCallback((val:string)=>{
+        if(selectedItems.includes(val)){
+            setSelectedItems(selectedItems.filter((item) => item !== val))
+            return;
+        }
+
+        const add = [...selectedItems, val]
+
+        setSelectedItems(add)
+    },[selectedItems, setSelectedItems])
+
     const options = genres.map((item) => (
         <Combobox.Option value={item.name} key={item.id} className={classes.item}>
             <Group>
@@ -36,33 +45,22 @@ export const MultiSelectCustom: FC<props> = ({genres, selectedItems, setSelected
 
     return (
         <>
-
-
             <Combobox
                 store={combobox}
                 width={280}
-                positionDependencies={[selectedItems]}
-                onOptionSubmit={(val) => {
-                    setSelectedItems((current) =>
-                        current.includes(val) ? current.filter((item) => item !== val) : [...current, val]
-                    );
-                }}
+                positionDependencies={selectedItems}
+                onOptionSubmit={onSubmit}
             >
                 <Combobox.Target>
                     <div onClick={() => {
                         combobox.toggleDropdown()
                         setPressed(true)
                     }}>
-                        {!pressed ? (<div className={classes.multiSelectInput}>
-                                {selectedItems.length > 0 ? (<Text>{selectedItems.join(', ')}</Text>) : (<Text className={classes.placeHolder}>Select genres</Text>)}
-                                <Image src={chevronDown} alt={'chevronDown'}/>
-                            </div>)
-                            :
-                            (<div className={classes.multiSelectInputOn}>
-                                    {selectedItems.length > 0 ? (<Text>{selectedItems.join(', ')}</Text>) : (<Text className={classes.placeHolder}>Select genres</Text>)}
-                                    <Image src={chevronDown} alt={'chevronDown'}/>
-                                </div>
-                            )}
+                        <div className={!pressed ? classes.multiSelectInput : classes.multiSelectInputOn}>
+                            {selectedItems.length > 0 ? (<Text>{selectedItems.join(', ').slice(0,27)}</Text>) : (
+                                <Text className={classes.placeHolder}>Select genres</Text>)}
+                            <Image src={chevronDown} alt={'chevronDown'}/>
+                        </div>
                     </div>
                 </Combobox.Target>
 
