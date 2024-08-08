@@ -4,6 +4,7 @@ import "./globals.css";
 import '@mantine/core/styles.css';
 import AppProvider from "@/packages/shared/providers/AppProvider";
 import '@mantine/dates/styles.css';
+import ClarityScript from '../packages/cinema/analytics/index'
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -17,13 +18,16 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+
+
   return (
     <html lang="en">
-      <body className={inter.className}>
-      <AppProvider>
-          {children}
-      </AppProvider>
-      </body>
+    <body className={inter.className}>
+    <AppProvider>
+        {children}
+    </AppProvider>
+    <ClarityScript />
+    </body>
     </html>
   );
 }
