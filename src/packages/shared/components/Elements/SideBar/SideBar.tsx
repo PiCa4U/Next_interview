@@ -1,7 +1,7 @@
 'use client'
 
 import type{FC} from "react";
-import {Burger} from "@mantine/core";
+import {Burger, Button} from "@mantine/core";
 import Image from "next/image";
 import {useDisclosure} from "@mantine/hooks";
 
@@ -16,6 +16,12 @@ type props={
 
 export const SideBar:FC<props>=({movies,ratedMovies})=>{
     const [opened, { toggle }] = useDisclosure();
+
+    const handleClick = () => {
+        console.log('Clarity:', window.clarity);
+        window.clarity("upgrade", "button click");
+    };
+
 
 
     return(
@@ -32,6 +38,7 @@ export const SideBar:FC<props>=({movies,ratedMovies})=>{
             />
             <div className={classes.container} style={opened?{display:"flex"}:undefined}>
                 <Image src={siteLogo} alt={'siteLogo'}/>
+                <Button onClick={handleClick}>Send analytic to clarity</Button>
                 <div className={classes.buttonContainer}>
                     <a href={`/`}>
                         <div className={movies ? classes.onButton : classes.button}>Movies</div>
